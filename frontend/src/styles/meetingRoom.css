@@ -1,0 +1,212 @@
+/* =========================================================
+   1. GLOBAL BACKDROP & FONT COLOR
+   ========================================================= */
+.meetVideoContainer {
+  position: relative;
+  width: 100%;
+  height: calc(100vh - 0px);            /* full viewport */
+  background: #03093a;                  /* deep navy */
+  color: #e9eef6;
+  overflow: hidden;
+}
+
+/* =========================================================
+   2. CHAT PANEL  (right side slide‑out)
+   ========================================================= */
+.chatRoom {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: clamp(280px, 28vw, 340px);
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  background: rgba(255, 255, 255, 0.07);
+  backdrop-filter: blur(14px);
+  border-left: 1px solid rgba(255, 255, 255, 0.09);
+  animation: slideIn 0.5s ease-out both;
+}
+@keyframes slideIn {
+  from { transform: translateX(100%); opacity: 0; }
+  to   { transform: translateX(0);    opacity: 1; }
+}
+
+.chatContainer {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  padding: 1.2rem 1rem 0;
+}
+
+.chatContainer h1 {
+  margin: 0 0 0.8rem 0;
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: #f3f6ff;
+}
+
+.chattingDisplay {
+  flex: 1;
+  overflow-y: auto;
+  padding-right: 0.2rem;
+}
+
+.chattingDisplay::-webkit-scrollbar {
+  width: 6px;
+}
+.chattingDisplay::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 3px;
+}
+
+.chattingDisplay p {
+  margin: 0;
+}
+
+.chattingArea {
+  display: flex;
+  gap: 0.5rem;
+  padding: 0.8rem 0 1rem;
+}
+
+.chattingArea .MuiOutlinedInput-root {
+  background: rgba(255, 255, 255, 0.06);
+  color: #fff;
+}
+.chattingArea .MuiInputLabel-root {
+  color: #d9e0ff;
+}
+.chattingArea .MuiOutlinedInput-notchedOutline {
+  border-color: rgba(255, 255, 255, 0.18);
+}
+.chattingArea .MuiOutlinedInput-root.Mui-focused
+  .MuiOutlinedInput-notchedOutline {
+  border-color: #037bff;
+}
+.chattingArea input {
+  color: #fff;
+}
+
+.chattingArea button.MuiButton-contained {
+  background: #037bff;
+  font-weight: 600;
+  transition: box-shadow 220ms;
+}
+.chattingArea button.MuiButton-contained:hover {
+  box-shadow: 0 0 8px #037bff;
+}
+
+/* message glow on hover */
+.chattingDisplay > div:hover {
+  background: rgba(255, 255, 255, 0.04);
+  border-radius: 6px;
+  padding-inline: 4px;
+}
+
+/* =========================================================
+   3. VIDEO LAYOUT
+   ========================================================= */
+
+/* local user video (host) */
+.meetUserVideo {
+  position: absolute;
+  /* centred horizontally, 55% down the screen */
+  top: 55%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: clamp(280px, 26vw, 360px);
+  height: auto;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.55);
+  object-fit: cover;
+}
+
+/* remote participants container */
+.conferenceView {
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  right: calc(clamp(280px, 28vw, 340px) + 1.5rem); /* keep clear of chat panel */
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.conferenceView video {
+  width: 160px;
+  height: 120px;
+  border-radius: 10px;
+  object-fit: cover;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.45);
+  transition: transform 220ms;
+}
+.conferenceView video:hover {
+  transform: scale(1.05);
+}
+
+/* =========================================================
+   4. BOTTOM CONTROL BAR
+   ========================================================= */
+.buttonContainers {
+  position: absolute;
+  bottom: 1.2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 1.1rem;
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(12px);
+  border-radius: 2rem;
+  padding: 0.5rem 1.2rem;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
+}
+
+.buttonContainers .MuiIconButton-root {
+  color: #fff;
+  transition: transform 150ms, color 150ms;
+}
+
+.buttonContainers .MuiIconButton-root:hover {
+  transform: translateY(-2px);
+  color: #037bff;
+}
+
+/* end‑call button stays red */
+.buttonContainers .MuiIconButton-root[style*="red"] {
+  color: #ff3b3b !important;
+}
+.buttonContainers .MuiIconButton-root[style*="red"]:hover {
+  color: #ff3b3b !important;
+  box-shadow: 0 0 10px rgba(255, 59, 59, 0.7);
+}
+
+/* Badge (new chat count) */
+.buttonContainers .MuiBadge-badge {
+  background: #037bff;
+  color: #fff;
+}
+
+/* =========================================================
+   5. SMALL‑SCREEN ADJUSTMENTS
+   ========================================================= */
+@media (max-width: 720px) {
+  /* move host video bottom‑left like classic mobile view */
+  .meetUserVideo {
+    top: auto;
+    left: 1rem;
+    bottom: 7rem;
+    transform: none;
+    width: 200px;
+  }
+
+  /* remote thumbs row scroll horizontally */
+  .conferenceView {
+    top: auto;
+    bottom: 7rem;
+    left: calc(200px + 1.8rem);
+    right: 1rem;
+    overflow-x: auto;
+    flex-wrap: nowrap;
+  }
+}
