@@ -2,7 +2,8 @@ import { createContext, useContext, useState } from "react";
 import axios from "axios";
 import httpStatus from "http-status";
 import server from '../environment.js'
-import server from "react-router-dom";
+import { useNavigate } from 'react-router-dom';
+
 
 export const AuthContext = createContext({});
 
